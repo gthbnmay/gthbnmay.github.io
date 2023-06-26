@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Energise Renewables: Australia Offshore Shear Factor</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body { 
+        margin: 0; 
+        padding: 0; 
+      }
+      #map { 
+        position: absolute; 
+        top: 0; 
+        bottom: 0; 
+        width: 100%; 
+      }
+        .mapboxgl-popup-content {
+         background-color: #fafafab0;
+        color: #000000;
+        padding: 0;
+        max-width: 200px;
+        max-height: 400px;
+        border-radius: 5px; 
+      }
+      .mapboxgl-popup {
+        font: 12px/20px 'Open Sans', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script>
+    // The value for 'accessToken' begins with 'pk...'
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZXItbm1heSIsImEiOiJjbGczOWg4bWEwMzF0M3Budmk3eTlrc3h0In0.nOR_oxpP1XOA4PtnnNwnNQ'; 
+    const map = new mapboxgl.Map({
+      container: 'map',
+      // Replace YOUR_STYLE_URL with your style URL.
+      style: 'mapbox://styles/er-nmay/clj84ce7h002w01rderfpfylu', 
+      center: [133, -25],
+      zoom: 4
+    });
+    let popup = new mapboxgl.Popup({ closeButton: false});
+
+    map.on('load', function() {
+      map.on('click', 'shear-hex-aus-a1bd6y', function(e) {
+        map.getCanvas().style.cursor = 'pointer';
+
+        // Copy coordinates array.
+        var title = e.features[0].properties.Legenda;
+
+        // Retrieve the 'Shear' value.
+        var shearValue = e.features[0].properties.Shear;
+
+        // Create the popup and set its coordinates and content.
+        popup
+          .setLngLat(e.lngLat)
+          .setHTML(`Shear: ${shearValue}`)
+          .addTo(map);
+      });
+
+      map.on('mouseleave', 'shear-hex-aus-a1bd6y', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+    });
+</script>
+</body>
+</html>
